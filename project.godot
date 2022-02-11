@@ -13,6 +13,12 @@ config_version=4
 config/name="Mario Clone"
 config/icon="res://Assets/Graphics/icon.png"
 
+[display]
+
+window/dpi/allow_hidpi=true
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
 [physics]
 
 common/enable_pause_aware_picking=true
