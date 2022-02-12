@@ -68,4 +68,4 @@ shape = SubResource( 1 )
 frames = SubResource( 2 )
 animation = "idle"
 playing = true
-offset = Vector2( 0, -5 )
+offset = Vector2( 0, -6 )
