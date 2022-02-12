@@ -1,10 +1,10 @@
 extends Node2D
 
-export (float) var gravity = 2500.0
-export (float) var acceleration = 800.0
-export (float) var deceleration = 2000.0
-export (float) var max_speed = 500.0
-export (float) var jump_velocity = 1000.0
+export (float) var gravity = 1200.0
+export (float) var acceleration = 500.0
+export (float) var deceleration = 1200.0
+export (float) var max_speed = 200.0
+export (float) var jump_velocity = 450.0
 export (float) var stop_jump_factor = 0.2
 
 onready var body = $Body

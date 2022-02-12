@@ -4,19 +4,19 @@
 [ext_resource path="res://Assets/Graphics/icon.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 480, 32 )
+extents = Vector2( 192, 32 )
 
 [node name="TestLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
-position = Vector2( 120, 120 )
+position = Vector2( 40, 36 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2( 507, 467 )
+position = Vector2( 211, 180 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="StaticBody2D"]
-scale = Vector2( 15, 1 )
+scale = Vector2( 6, 1 )
 texture = ExtResource( 2 )
