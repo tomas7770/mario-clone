@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/Player/Player.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8, 12 )
+extents = Vector2( 8, 10 )
 
 [sub_resource type="AtlasTexture" id=3]
 flags = 4
@@ -76,4 +76,4 @@ shape = SubResource( 1 )
 frames = SubResource( 2 )
 animation = "idle"
 playing = true
-offset = Vector2( 0, -4 )
+offset = Vector2( 0, -5 )
