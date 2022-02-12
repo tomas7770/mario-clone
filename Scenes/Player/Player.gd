@@ -1,5 +1,11 @@
 extends Node2D
 
+enum MOVE_DIR {LEFT, RIGHT}
+
+const IDLE_ANIM = "idle"
+const WALK_ANIM = "walk"
+const JUMP_ANIM = "jump"
+
 export (float) var gravity = 1200.0
 export (float) var acceleration = 500.0
 export (float) var deceleration = 1200.0
@@ -11,12 +17,32 @@ onready var body = $Body
 onready var sprite = $AnimatedSprite
 
 var velocity = Vector2()
+var current_move_dir = MOVE_DIR.RIGHT
 var jumping = false
+
+func _process_animations():
+	if body.is_on_floor():
+		if is_zero_approx(velocity.x):
+			if sprite.animation != IDLE_ANIM:
+				sprite.animation = IDLE_ANIM
+		else:
+			if sprite.animation != WALK_ANIM:
+				sprite.animation = WALK_ANIM
+	else:
+		if jumping and sprite.animation != JUMP_ANIM:
+			sprite.animation = JUMP_ANIM
+	match current_move_dir:
+		MOVE_DIR.RIGHT:
+			sprite.flip_h = false
+		MOVE_DIR.LEFT:
+			sprite.flip_h = true
 
 func _process(_delta):
 	sprite.transform = body.transform
+	_process_animations()
 
 func _attempt_move(delta, left):
+	current_move_dir = MOVE_DIR.LEFT if left else MOVE_DIR.RIGHT
 	var move_sign = -1 if left else 1
 	if is_zero_approx(velocity.x) or sign(velocity.x) == move_sign:
 		velocity.x += move_sign*acceleration*delta
