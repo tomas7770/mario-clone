@@ -27,7 +27,7 @@ func _ready():
 		var used_rect = tilemap.get_used_rect()
 		camera.limit_left = used_rect.position.x*tilemap.cell_size.x
 		camera.limit_right = used_rect.end.x*tilemap.cell_size.x
-		camera.limit_top = used_rect.position.y*tilemap.cell_size.y
+		camera.limit_top = used_rect.position.y*tilemap.cell_size.y-240
 		camera.limit_bottom = used_rect.end.y*tilemap.cell_size.y
 
 func _process_animations():
