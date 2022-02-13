@@ -15,10 +15,20 @@ export (float) var stop_jump_factor = 0.2
 
 onready var body = $Body
 onready var sprite = $AnimatedSprite
+onready var camera = $AnimatedSprite/Camera2D
 
 var velocity = Vector2()
 var current_move_dir = MOVE_DIR.RIGHT
 var jumping = false
+
+func _ready():
+	var tilemap = get_parent().get_node_or_null("TileMap")
+	if tilemap:
+		var used_rect = tilemap.get_used_rect()
+		camera.limit_left = used_rect.position.x*tilemap.cell_size.x
+		camera.limit_right = used_rect.end.x*tilemap.cell_size.x
+		camera.limit_top = used_rect.position.y*tilemap.cell_size.y
+		camera.limit_bottom = used_rect.end.y*tilemap.cell_size.y
 
 func _process_animations():
 	if body.is_on_floor():
