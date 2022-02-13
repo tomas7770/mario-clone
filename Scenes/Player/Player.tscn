@@ -74,3 +74,5 @@ offset = Vector2( 0, -6 )
 current = true
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
+drag_margin_left = 0.1
+drag_margin_right = 0.1
