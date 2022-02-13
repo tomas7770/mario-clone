@@ -69,3 +69,8 @@ frames = SubResource( 2 )
 animation = "idle"
 playing = true
 offset = Vector2( 0, -6 )
+
+[node name="Camera2D" type="Camera2D" parent="AnimatedSprite"]
+current = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
