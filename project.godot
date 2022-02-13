@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Mario Clone"
-run/main_scene="res://Scenes/TestLevel.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://Assets/Graphics/icon.png"
 
 [display]
