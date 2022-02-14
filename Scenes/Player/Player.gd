@@ -1,4 +1,7 @@
 extends Node2D
+class_name Player
+
+signal got_coin
 
 enum MOVE_DIR {LEFT, RIGHT}
 
@@ -20,6 +23,8 @@ onready var camera = $AnimatedSprite/Camera2D
 var velocity = Vector2()
 var current_move_dir = MOVE_DIR.RIGHT
 var jumping = false
+
+var coins = 0
 
 func _ready():
 	var tilemap = get_parent().get_node_or_null("TileMap")
@@ -98,3 +103,7 @@ func _physics_process(delta):
 	_physics_input(delta)
 	velocity.y += gravity*delta
 	velocity = body.move_and_slide(velocity, Vector2.UP)
+
+func give_coin():
+	coins += 1
+	emit_signal("got_coin")
