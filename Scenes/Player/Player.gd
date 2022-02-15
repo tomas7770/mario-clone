@@ -15,6 +15,7 @@ export (float) var deceleration = 1200.0
 export (float) var max_speed = 200.0
 export (float) var jump_velocity = 450.0
 export (float) var stop_jump_factor = 0.2
+export (float) var enemy_bounce = 200.0
 
 onready var body = $Body
 onready var sprite = $AnimatedSprite
@@ -83,6 +84,14 @@ func _attempt_jump():
 	jumping = true
 	jump_sound.play()
 
+func _stomp_enemy(enemy):
+	enemy.stomp()
+	if Input.is_action_pressed("plr1_jump"):
+		velocity.y = -jump_velocity
+		jumping = true
+	else:
+		velocity.y = -enemy_bounce
+
 func _stop_jump():
 	if !jumping:
 		return
@@ -106,6 +115,12 @@ func _physics_process(delta):
 	_physics_input(delta)
 	velocity.y += gravity*delta
 	velocity = body.move_and_slide(velocity, Vector2.UP)
+
+func _on_BodyArea_area_entered(area):
+	var enemy = area.get_parent().get_parent() if area.get_parent() else null
+	if enemy and enemy.is_in_group("Enemies"):
+		if velocity.y > 0:
+			_stomp_enemy(enemy)
 
 func give_coin():
 	coins += 1

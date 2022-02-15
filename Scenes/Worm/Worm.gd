@@ -1,0 +1,35 @@
+extends Node2D
+
+export (float) var speed = 15.0
+
+onready var body = $Body
+onready var body_area = $Body/BodyArea
+onready var sprite = $AnimatedSprite
+
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var velocity = Vector2.LEFT*speed
+var alive = true
+
+func _process(_delta):
+	sprite.transform = body.transform
+
+func _set_move_dir(left):
+	var dir = -1 if left else 1
+	velocity.x = dir*speed
+	sprite.flip_h = true if left else false
+
+func stomp():
+	body_area.set_deferred("monitorable", false)
+	velocity.x = 0
+	sprite.animation = "dead"
+
+func _physics_process(delta):
+	velocity.y += gravity*delta
+	velocity = body.move_and_slide(velocity, Vector2.UP)
+	if alive:
+		for i in range(body.get_slide_count()):
+			var collision = body.get_slide_collision(i)
+			if Vector2.LEFT.dot(collision.normal) > 0.01:
+				_set_move_dir(true)
+			elif Vector2.RIGHT.dot(collision.normal) > 0.01:
+				_set_move_dir(false)
