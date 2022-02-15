@@ -52,3 +52,10 @@ shape = SubResource( 5 )
 frames = SubResource( 3 )
 offset = Vector2( 0, -5 )
 flip_h = true
+
+[node name="RemovalTimer" type="Timer" parent="."]
+process_mode = 0
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="RemovalTimer" to="." method="_on_RemovalTimer_timeout"]

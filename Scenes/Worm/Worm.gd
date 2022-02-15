@@ -5,6 +5,7 @@ export (float) var speed = 15.0
 onready var body = $Body
 onready var body_area = $Body/BodyArea
 onready var sprite = $AnimatedSprite
+onready var removal_timer = $RemovalTimer
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var velocity = Vector2.LEFT*speed
@@ -25,6 +26,7 @@ func stomp():
 	body_area.set_deferred("monitorable", false)
 	velocity.x = 0
 	sprite.animation = "dead"
+	removal_timer.start()
 
 func _physics_process(delta):
 	velocity.y += gravity*delta
@@ -36,3 +38,6 @@ func _physics_process(delta):
 				_set_move_dir(true)
 			elif Vector2.RIGHT.dot(collision.normal) > 0.01:
 				_set_move_dir(false)
+
+func _on_RemovalTimer_timeout():
+	queue_free()
