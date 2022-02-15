@@ -19,6 +19,8 @@ export (float) var stop_jump_factor = 0.2
 onready var body = $Body
 onready var sprite = $AnimatedSprite
 onready var camera = $AnimatedSprite/Camera2D
+onready var jump_sound = $JumpSound
+onready var coin_sound = $CoinSound
 
 var velocity = Vector2()
 var current_move_dir = MOVE_DIR.RIGHT
@@ -79,6 +81,7 @@ func _attempt_jump():
 		return
 	velocity.y -= jump_velocity
 	jumping = true
+	jump_sound.play()
 
 func _stop_jump():
 	if !jumping:
@@ -106,4 +109,5 @@ func _physics_process(delta):
 
 func give_coin():
 	coins += 1
+	coin_sound.play()
 	emit_signal("got_coin")
