@@ -10,6 +10,9 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var velocity = Vector2.LEFT*speed
 var alive = true
 
+func _ready():
+	sprite.playing = true
+
 func _process(_delta):
 	sprite.transform = body.transform
 
