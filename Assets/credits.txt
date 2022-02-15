@@ -1,0 +1,3 @@
+Player.png: https://opengameart.org/content/a-platformer-in-the-forest (characters.png)
+Tilemap.png: https://opengameart.org/content/a-platformer-in-the-forest (sheet.png)
+Worm.png: https://opengameart.org/content/a-platformer-in-the-forest (characters.png), https://freedoom.github.io/ (POB2A0 sprite)
