@@ -2,6 +2,7 @@ extends Node2D
 class_name Player
 
 signal got_coin
+signal score_changed
 
 enum MOVE_DIR {LEFT, RIGHT}
 
@@ -28,6 +29,7 @@ var current_move_dir = MOVE_DIR.RIGHT
 var jumping = false
 
 var coins = 0
+var score = 0
 
 func _ready():
 	var tilemap = get_parent().get_node_or_null("TileMap")
@@ -85,7 +87,7 @@ func _attempt_jump():
 	jump_sound.play()
 
 func _stomp_enemy(enemy):
-	enemy.stomp()
+	enemy.stomp(self)
 	if Input.is_action_pressed("plr1_jump"):
 		velocity.y = -jump_velocity
 		jumping = true
@@ -126,3 +128,7 @@ func give_coin():
 	coins += 1
 	coin_sound.play()
 	emit_signal("got_coin")
+
+func give_score(amount):
+	score += amount
+	emit_signal("score_changed")

@@ -1,6 +1,7 @@
 extends Node2D
 
 export (float) var speed = 15.0
+export (int) var score = 100
 
 onready var body = $Body
 onready var body_area = $Body/BodyArea
@@ -22,11 +23,12 @@ func _set_move_dir(left):
 	velocity.x = dir*speed
 	sprite.flip_h = true if left else false
 
-func stomp():
+func stomp(player):
 	body_area.set_deferred("monitorable", false)
 	velocity.x = 0
 	sprite.animation = "dead"
 	removal_timer.start()
+	player.give_score(score)
 
 func _physics_process(delta):
 	velocity.y += gravity*delta

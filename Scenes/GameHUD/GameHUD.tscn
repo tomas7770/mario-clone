@@ -33,6 +33,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ScoreLabel" type="Label" parent="Container"]
+margin_left = 5.0
+margin_top = 20.0
+margin_right = 56.0
+margin_bottom = 34.0
+text = "Score: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PauseBox" type="Panel" parent="Container"]
 visible = false
 anchor_left = 0.5
