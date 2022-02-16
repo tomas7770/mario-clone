@@ -32,3 +32,31 @@ text = "0"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PauseBox" type="Panel" parent="Container"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = -10.0
+margin_right = 30.0
+margin_bottom = 10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Container/PauseBox"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -23.0
+margin_top = -7.0
+margin_right = 23.0
+margin_bottom = 7.0
+text = "Paused"
+__meta__ = {
+"_edit_use_anchors_": false
+}

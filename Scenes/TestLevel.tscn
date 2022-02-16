@@ -7,6 +7,7 @@
 [ext_resource path="res://Scenes/Worm/Worm.tscn" type="PackedScene" id=5]
 
 [node name="TestLevel" type="Node2D"]
+pause_mode = 1
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 3 )

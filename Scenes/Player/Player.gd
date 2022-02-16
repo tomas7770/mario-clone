@@ -108,7 +108,7 @@ func _physics_input(delta):
 		_stop_move(delta)
 	if Input.is_action_just_pressed("plr1_jump"):
 		_attempt_jump()
-	elif Input.is_action_just_released("plr1_jump"):
+	elif !Input.is_action_pressed("plr1_jump"):
 		_stop_jump()
 
 func _physics_process(delta):
