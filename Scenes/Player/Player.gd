@@ -82,7 +82,7 @@ func _stop_move(delta):
 func _attempt_jump():
 	if jumping or !body.is_on_floor():
 		return
-	velocity.y -= jump_velocity
+	velocity.y = -jump_velocity
 	jumping = true
 	jump_sound.play()
 
@@ -114,8 +114,8 @@ func _physics_input(delta):
 		_stop_jump()
 
 func _physics_process(delta):
-	_physics_input(delta)
 	velocity.y += gravity*delta
+	_physics_input(delta)
 	velocity = body.move_and_slide(velocity, Vector2.UP)
 
 func _on_BodyArea_area_entered(area):
