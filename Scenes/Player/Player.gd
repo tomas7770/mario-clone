@@ -113,10 +113,20 @@ func _physics_input(delta):
 	elif !Input.is_action_pressed("plr1_jump"):
 		_stop_jump()
 
+func _breakblocks():
+	for i in range(body.get_slide_count()):
+			var collision = body.get_slide_collision(i)
+			if Vector2.DOWN.dot(collision.normal) > 0.01:
+				var other_body = collision.collider
+				var other_body_parent = other_body.get_parent()
+				if other_body_parent and (other_body_parent is BreakBlock):
+					other_body_parent.do_break()
+
 func _physics_process(delta):
 	velocity.y += gravity*delta
 	_physics_input(delta)
 	velocity = body.move_and_slide(velocity, Vector2.UP)
+	_breakblocks()
 
 func _on_BodyArea_area_entered(area):
 	var enemy = area.get_parent().get_parent() if area.get_parent() else null
