@@ -120,7 +120,7 @@ func _breakblocks():
 				var other_body = collision.collider
 				var other_body_parent = other_body.get_parent()
 				if other_body_parent and (other_body_parent is BreakBlock):
-					other_body_parent.do_break()
+					other_body_parent.do_break(self)
 
 func _physics_process(delta):
 	velocity.y += gravity*delta
