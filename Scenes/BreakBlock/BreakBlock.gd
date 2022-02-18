@@ -12,6 +12,7 @@ onready var break_particles = $BreakParticles
 onready var coin_particle = $CoinParticle
 
 var is_broken = false
+var hit_this_tick = false
 
 func _destroy_on_timeout(timeout):
 	var timer = Timer.new()
@@ -21,7 +22,7 @@ func _destroy_on_timeout(timeout):
 	timer.start(timeout)
 
 func do_break(player):
-	if is_broken:
+	if is_broken or hit_this_tick:
 		return
 	match content_type:
 		CONT_TYPE.NONE:
@@ -38,3 +39,7 @@ func do_break(player):
 			if coin_amount <= 0:
 				sprite.modulate = Color(0,1,1)
 				is_broken = true
+	hit_this_tick = true
+
+func _physics_process(_delta):
+	hit_this_tick = false
