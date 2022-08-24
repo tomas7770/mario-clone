@@ -1,9 +1,10 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Assets/Graphics/Player/Player.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Sounds/Player/jump.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/Coin/pickup.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Resources/DamageAnim.tres" type="Animation" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 10 )
@@ -73,6 +74,10 @@ shape = SubResource( 1 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodyArea"]
 shape = SubResource( 11 )
 
+[node name="DamageTimer" type="Timer" parent="."]
+process_mode = 0
+one_shot = true
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "idle"
@@ -91,5 +96,9 @@ stream = ExtResource( 3 )
 
 [node name="CoinSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../AnimatedSprite")
+anims/Damage = ExtResource( 5 )
 
 [connection signal="area_entered" from="BodyArea" to="." method="_on_BodyArea_area_entered"]

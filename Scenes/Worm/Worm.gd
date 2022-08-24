@@ -20,6 +20,7 @@ func _set_move_dir(left):
 	sprite.flip_h = true if left else false
 
 func stomp(player):
+	alive = false
 	body_area.set_deferred("monitorable", false)
 	velocity.x = 0
 	sprite.animation = "dead"

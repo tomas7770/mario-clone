@@ -3,12 +3,15 @@ class_name Player
 
 signal got_coin
 signal score_changed
+signal hp_changed
 
 enum MOVE_DIR {LEFT, RIGHT}
 
 const IDLE_ANIM = "idle"
 const WALK_ANIM = "walk"
 const JUMP_ANIM = "jump"
+
+const MAX_HP = 3
 
 export (float) var gravity = 1200.0
 export (float) var acceleration = 500.0
@@ -18,10 +21,13 @@ export (float) var jump_velocity = 450.0
 export (float) var stop_jump_factor = 0.2
 export (float) var enemy_bounce = 200.0
 
+onready var body_area = $BodyArea
+onready var damage_timer = $DamageTimer
 onready var sprite = $AnimatedSprite
 onready var camera = $AnimatedSprite/Camera2D
 onready var jump_sound = $JumpSound
 onready var coin_sound = $CoinSound
+onready var animation_player = $AnimationPlayer
 
 var velocity = Vector2()
 var current_move_dir = MOVE_DIR.RIGHT
@@ -29,6 +35,7 @@ var jumping = false
 
 var coins = 0
 var score = 0
+var hp = MAX_HP
 
 func _ready():
 	var tilemap = get_parent().get_node_or_null("TileMap")
@@ -119,11 +126,22 @@ func _breakblocks():
 				if other_body is BreakBlock:
 					other_body.do_break(self)
 
+func handle_touching_enemies():
+	if !damage_timer.is_stopped():
+		return
+	var overlapping_areas = body_area.get_overlapping_areas()
+	for area in overlapping_areas:
+		var enemy = area.get_parent()
+		if enemy and enemy.is_in_group("Enemies") and enemy.alive:
+			if velocity.y <= 0:
+				take_damage()
+
 func _physics_process(delta):
 	velocity.y += gravity*delta
 	_physics_input(delta)
 	velocity = move_and_slide(velocity, Vector2.UP)
 	_breakblocks()
+	handle_touching_enemies()
 
 func _on_BodyArea_area_entered(area):
 	var enemy = area.get_parent()
@@ -139,3 +157,10 @@ func give_coin():
 func give_score(amount):
 	score += amount
 	emit_signal("score_changed")
+
+func take_damage():
+	hp -= 1
+	damage_timer.start()
+	animation_player.stop()
+	animation_player.play("Damage")
+	emit_signal("hp_changed")
