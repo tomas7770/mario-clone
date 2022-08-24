@@ -34,18 +34,16 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="Worm" type="Node2D" groups=["Enemies"]]
+[node name="Worm" type="KinematicBody2D" groups=["Enemies"]]
+collision_mask = 2
 script = ExtResource( 2 )
 
-[node name="Body" type="KinematicBody2D" parent="."]
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 4 )
 
-[node name="BodyArea" type="Area2D" parent="Body"]
+[node name="BodyArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body/BodyArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyArea"]
 shape = SubResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

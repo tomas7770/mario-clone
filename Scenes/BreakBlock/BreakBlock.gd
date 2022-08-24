@@ -1,4 +1,4 @@
-extends Node2D
+extends StaticBody2D
 class_name BreakBlock
 
 enum CONT_TYPE {NONE, COINS}
@@ -6,7 +6,7 @@ enum CONT_TYPE {NONE, COINS}
 export (CONT_TYPE) var content_type = CONT_TYPE.NONE
 export (int) var coin_amount = 0
 
-onready var collision_shape = $Body/CollisionShape2D
+onready var collision_shape = $CollisionShape2D
 onready var sprite = $AnimatedSprite
 onready var break_particles = $BreakParticles
 onready var coin_particle = $CoinParticle

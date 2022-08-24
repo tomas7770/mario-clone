@@ -22,13 +22,11 @@ animations = [ {
 [sub_resource type="Curve" id=4]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.745098, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 
-[node name="BreakBlock" type="Node2D"]
+[node name="BreakBlock" type="StaticBody2D"]
+collision_layer = 2
 script = ExtResource( 2 )
 
-[node name="Body" type="StaticBody2D" parent="."]
-collision_layer = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]

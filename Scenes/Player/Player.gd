@@ -1,4 +1,4 @@
-extends Node2D
+extends KinematicBody2D
 class_name Player
 
 signal got_coin
@@ -18,7 +18,6 @@ export (float) var jump_velocity = 450.0
 export (float) var stop_jump_factor = 0.2
 export (float) var enemy_bounce = 200.0
 
-onready var body = $Body
 onready var sprite = $AnimatedSprite
 onready var camera = $AnimatedSprite/Camera2D
 onready var jump_sound = $JumpSound
@@ -41,7 +40,7 @@ func _ready():
 		camera.limit_bottom = used_rect.end.y*tilemap.cell_size.y
 
 func _process_animations():
-	if body.is_on_floor():
+	if is_on_floor():
 		if is_zero_approx(velocity.x):
 			if sprite.animation != IDLE_ANIM:
 				sprite.animation = IDLE_ANIM
@@ -58,7 +57,6 @@ func _process_animations():
 			sprite.flip_h = true
 
 func _process(_delta):
-	sprite.transform = body.transform
 	_process_animations()
 
 func _attempt_move(delta, left):
@@ -80,7 +78,7 @@ func _stop_move(delta):
 			velocity.x = 0
 
 func _attempt_jump():
-	if jumping or !body.is_on_floor():
+	if jumping or !is_on_floor():
 		return
 	velocity.y = -jump_velocity
 	jumping = true
@@ -114,22 +112,21 @@ func _physics_input(delta):
 		_stop_jump()
 
 func _breakblocks():
-	for i in range(body.get_slide_count()):
-			var collision = body.get_slide_collision(i)
+	for i in range(get_slide_count()):
+			var collision = get_slide_collision(i)
 			if Vector2.DOWN.dot(collision.normal) > 0.01:
 				var other_body = collision.collider
-				var other_body_parent = other_body.get_parent()
-				if other_body_parent and (other_body_parent is BreakBlock):
-					other_body_parent.do_break(self)
+				if other_body is BreakBlock:
+					other_body.do_break(self)
 
 func _physics_process(delta):
 	velocity.y += gravity*delta
 	_physics_input(delta)
-	velocity = body.move_and_slide(velocity, Vector2.UP)
+	velocity = move_and_slide(velocity, Vector2.UP)
 	_breakblocks()
 
 func _on_BodyArea_area_entered(area):
-	var enemy = area.get_parent().get_parent() if area.get_parent() else null
+	var enemy = area.get_parent()
 	if enemy and enemy.is_in_group("Enemies"):
 		if velocity.y > 0:
 			_stomp_enemy(enemy)

@@ -1,10 +1,9 @@
-extends Node2D
+extends KinematicBody2D
 
 export (float) var speed = 15.0
 export (int) var score = 100
 
-onready var body = $Body
-onready var body_area = $Body/BodyArea
+onready var body_area = $BodyArea
 onready var sprite = $AnimatedSprite
 onready var removal_timer = $RemovalTimer
 
@@ -14,9 +13,6 @@ var alive = true
 
 func _ready():
 	sprite.playing = true
-
-func _process(_delta):
-	sprite.transform = body.transform
 
 func _set_move_dir(left):
 	var dir = -1 if left else 1
@@ -32,10 +28,10 @@ func stomp(player):
 
 func _physics_process(delta):
 	velocity.y += gravity*delta
-	velocity = body.move_and_slide(velocity, Vector2.UP)
+	velocity = move_and_slide(velocity, Vector2.UP)
 	if alive:
-		for i in range(body.get_slide_count()):
-			var collision = body.get_slide_collision(i)
+		for i in range(get_slide_count()):
+			var collision = get_slide_collision(i)
 			if Vector2.LEFT.dot(collision.normal) > 0.01:
 				_set_move_dir(true)
 			elif Vector2.RIGHT.dot(collision.normal) > 0.01:
