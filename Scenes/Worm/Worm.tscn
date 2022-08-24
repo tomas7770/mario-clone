@@ -9,6 +9,10 @@ extents = Vector2( 8, 7 )
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 8, 7 )
 
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 128, 0, 32, 24 )
+
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 32, 24 )
@@ -17,20 +21,16 @@ region = Rect2( 0, 0, 32, 24 )
 atlas = ExtResource( 1 )
 region = Rect2( 32, 0, 32, 24 )
 
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 1 )
-region = Rect2( 128, 0, 32, 24 )
-
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
-"loop": true,
-"name": "default",
-"speed": 5.0
-}, {
 "frames": [ SubResource( 6 ) ],
 "loop": true,
 "name": "dead",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "default",
 "speed": 5.0
 } ]
 
