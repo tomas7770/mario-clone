@@ -20,6 +20,7 @@ export (float) var max_speed = 200.0
 export (float) var jump_velocity = 450.0
 export (float) var stop_jump_factor = 0.2
 export (float) var enemy_bounce = 200.0
+export (float) var death_bounce = 200.0
 
 onready var body_area = $BodyArea
 onready var damage_timer = $DamageTimer
@@ -36,6 +37,7 @@ var jumping = false
 var coins = 0
 var score = 0
 var hp = MAX_HP
+var alive = true
 
 func _ready():
 	var tilemap = get_parent().get_node_or_null("TileMap")
@@ -64,7 +66,8 @@ func _process_animations():
 			sprite.flip_h = true
 
 func _process(_delta):
-	_process_animations()
+	if alive:
+		_process_animations()
 
 func _attempt_move(delta, left):
 	current_move_dir = MOVE_DIR.LEFT if left else MOVE_DIR.RIGHT
@@ -138,16 +141,24 @@ func handle_touching_enemies():
 
 func _physics_process(delta):
 	velocity.y += gravity*delta
-	_physics_input(delta)
-	velocity = move_and_slide(velocity, Vector2.UP)
-	_breakblocks()
-	handle_touching_enemies()
+	if alive:
+		_physics_input(delta)
+		velocity = move_and_slide(velocity, Vector2.UP)
+		_breakblocks()
+		handle_touching_enemies()
+	else:
+		position += velocity*delta
 
 func _on_BodyArea_area_entered(area):
-	var enemy = area.get_parent()
-	if enemy and enemy.is_in_group("Enemies"):
+	if !alive:
+		return
+	var area_parent = area.get_parent()
+	if area_parent and area_parent.is_in_group("Enemies"):
 		if velocity.y > 0:
-			_stomp_enemy(enemy)
+			_stomp_enemy(area_parent)
+	elif area is Coin:
+		give_coin()
+		area.pick_up()
 
 func give_coin():
 	coins += 1
@@ -159,8 +170,21 @@ func give_score(amount):
 	emit_signal("score_changed")
 
 func take_damage():
+	if !alive:
+		return
 	hp -= 1
-	damage_timer.start()
+	if hp <= 0:
+		die()
+	else:
+		damage_timer.start()
+		animation_player.stop()
+		animation_player.play("Damage")
+		emit_signal("hp_changed")
+
+func die():
+	hp = 0
+	alive = false
+	velocity = death_bounce*Vector2.UP
+	sprite.animation = IDLE_ANIM
 	animation_player.stop()
-	animation_player.play("Damage")
 	emit_signal("hp_changed")
