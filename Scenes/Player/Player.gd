@@ -186,12 +186,18 @@ func take_damage():
 		damage_timer.start()
 		animation_player.stop()
 		animation_player.play("Damage")
+		animation_player.seek(0.1)
 		emit_signal("hp_changed")
+
+func _on_DamageTimer_timeout():
+	animation_player.seek(0, true)
+	animation_player.stop()
 
 func die():
 	hp = 0
 	alive = false
 	velocity = death_bounce*Vector2.UP
 	sprite.animation = IDLE_ANIM
+	animation_player.seek(0, true)
 	animation_player.stop()
 	emit_signal("hp_changed")

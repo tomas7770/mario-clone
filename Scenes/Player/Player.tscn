@@ -102,3 +102,4 @@ root_node = NodePath("../AnimatedSprite")
 anims/Damage = ExtResource( 5 )
 
 [connection signal="area_entered" from="BodyArea" to="." method="_on_BodyArea_area_entered"]
+[connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]
