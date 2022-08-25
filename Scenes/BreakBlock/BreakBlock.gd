@@ -1,10 +1,12 @@
 extends StaticBody2D
 class_name BreakBlock
 
-enum CONT_TYPE {NONE, COINS}
+enum CONT_TYPE {NONE, COINS, HEART}
 
 export (CONT_TYPE) var content_type = CONT_TYPE.NONE
 export (int) var coin_amount = 0
+
+var heart_scene = preload("res://Scenes/Heart/Heart.tscn")
 
 onready var collision_shape = $CollisionShape2D
 onready var sprite = $AnimatedSprite
@@ -39,6 +41,12 @@ func do_break(player):
 			if coin_amount <= 0:
 				sprite.modulate = Color(0,1,1)
 				is_broken = true
+		CONT_TYPE.HEART:
+			var new_heart = heart_scene.instance()
+			new_heart.position = position + Vector2(0, -12)
+			get_parent().add_child(new_heart)
+			sprite.modulate = Color(0,1,1)
+			is_broken = true
 	hit_this_tick = true
 
 func _physics_process(_delta):

@@ -159,6 +159,9 @@ func _on_BodyArea_area_entered(area):
 	elif area is Coin:
 		give_coin()
 		area.pick_up()
+	elif area is Heart:
+		give_hp()
+		area.pick_up()
 
 func give_coin():
 	coins += 1
@@ -168,6 +171,14 @@ func give_coin():
 func give_score(amount):
 	score += amount
 	emit_signal("score_changed")
+
+func give_hp():
+	if !alive:
+		return
+	hp += 1
+	if hp > MAX_HP:
+		hp = MAX_HP
+	emit_signal("hp_changed")
 
 func take_damage():
 	if !alive:
