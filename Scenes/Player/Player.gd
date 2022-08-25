@@ -156,12 +156,8 @@ func _on_BodyArea_area_entered(area):
 	if area_parent and area_parent.is_in_group("Enemies"):
 		if velocity.y > 0:
 			_stomp_enemy(area_parent)
-	elif area is Coin:
-		give_coin()
-		area.pick_up()
-	elif area is Heart:
-		give_hp()
-		area.pick_up()
+	elif area is Item:
+		area.pick_up(self)
 
 func give_coin():
 	coins += 1

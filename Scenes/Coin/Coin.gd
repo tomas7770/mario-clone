@@ -1,6 +1,6 @@
-extends Area2D
-class_name Coin
+extends Item
 
-func pick_up():
-	get_node("CollisionShape2D").set_deferred("disabled", true)
+func pick_up(player):
+	.pick_up(player)
+	player.give_coin()
 	queue_free()

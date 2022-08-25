@@ -15,14 +15,9 @@ _global_script_classes=[ {
 "path": "res://Scenes/BreakBlock/BreakBlock.gd"
 }, {
 "base": "Area2D",
-"class": "Coin",
+"class": "Item",
 "language": "GDScript",
-"path": "res://Scenes/Coin/Coin.gd"
-}, {
-"base": "Area2D",
-"class": "Heart",
-"language": "GDScript",
-"path": "res://Scenes/Heart/Heart.gd"
+"path": "res://Scenes/Item.gd"
 }, {
 "base": "KinematicBody2D",
 "class": "Player",
@@ -31,8 +26,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "BreakBlock": "",
-"Coin": "",
-"Heart": "",
+"Item": "",
 "Player": ""
 }
 

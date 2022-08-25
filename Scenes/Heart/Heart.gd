@@ -1,8 +1,6 @@
-extends Area2D
-class_name Heart
+extends Item
 
-export (int) var score = 1000
-
-func pick_up():
-	get_node("CollisionShape2D").set_deferred("disabled", true)
+func pick_up(player):
+	.pick_up(player)
+	player.give_hp()
 	queue_free()

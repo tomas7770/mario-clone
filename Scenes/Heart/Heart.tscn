@@ -9,6 +9,7 @@ extents = Vector2( 4, 4 )
 [node name="Heart" type="Area2D"]
 collision_layer = 2
 script = ExtResource( 2 )
+score = 1000
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
