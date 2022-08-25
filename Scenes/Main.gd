@@ -5,6 +5,7 @@ var level
 var game_hud
 
 func _ready():
+	randomize()
 	load_level("TestLevel")
 
 func _input(event):

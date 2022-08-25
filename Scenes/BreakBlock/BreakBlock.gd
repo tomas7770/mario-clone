@@ -2,6 +2,8 @@ extends StaticBody2D
 class_name BreakBlock
 
 enum CONT_TYPE {NONE, COINS, HEART}
+const EMPTY_COLOR = Color(0,1,1)
+const ITEM_LAUNCH_VEL = Vector2(15, -60)
 
 export (CONT_TYPE) var content_type = CONT_TYPE.NONE
 export (int) var coin_amount = 0
@@ -39,13 +41,17 @@ func do_break(player):
 			coin_particle.emitting = true
 			coin_amount -= 1
 			if coin_amount <= 0:
-				sprite.modulate = Color(0,1,1)
+				sprite.modulate = EMPTY_COLOR
 				is_broken = true
 		CONT_TYPE.HEART:
 			var new_heart = heart_scene.instance()
 			new_heart.position = position + Vector2(0, -12)
+			new_heart.velocity = ITEM_LAUNCH_VEL
+			# Randomize X direction
+			if randi() % 2:
+				new_heart.velocity.x = -new_heart.velocity.x
 			get_parent().add_child(new_heart)
-			sprite.modulate = Color(0,1,1)
+			sprite.modulate = EMPTY_COLOR
 			is_broken = true
 	hit_this_tick = true
 
