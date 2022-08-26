@@ -9,6 +9,7 @@ anchor_bottom = 1.0
 script = ExtResource( 3 )
 
 [node name="RespawnTimer" type="Timer" parent="."]
+pause_mode = 1
 process_mode = 0
 wait_time = 3.0
 one_shot = true
