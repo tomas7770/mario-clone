@@ -4,6 +4,7 @@ class_name Player
 signal coins_changed
 signal score_changed
 signal hp_changed
+signal lives_changed
 signal died
 
 enum MOVE_DIR {LEFT, RIGHT}
@@ -14,6 +15,8 @@ const JUMP_ANIM = "jump"
 
 const MAX_HP = 3
 const DEFAULT_LIVES = 5
+
+const COINS_1UP_LIMIT = 100
 
 export (float) var gravity = 1200.0
 export (float) var acceleration = 500.0
@@ -171,6 +174,9 @@ func _on_BodyArea_area_entered(area):
 func give_coin():
 	coins += 1
 	coin_sound.play()
+	if coins >= COINS_1UP_LIMIT:
+		coins = 0
+		give_life()
 	emit_signal("coins_changed")
 
 func give_score(amount):
@@ -202,9 +208,17 @@ func _on_DamageTimer_timeout():
 	animation_player.seek(0, true)
 	animation_player.stop()
 
+func give_life():
+	lives += 1
+	emit_signal("lives_changed")
+
+func take_life():
+	lives -= 1
+	emit_signal("lives_changed")
+
 func die():
 	hp = 0
-	lives -= 1
+	take_life()
 	alive = false
 	velocity = death_bounce*Vector2.UP
 	sprite.animation = IDLE_ANIM

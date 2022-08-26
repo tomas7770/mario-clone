@@ -10,10 +10,11 @@ func track_player(player):
 	player.connect("coins_changed", self, "_on_coins_changed", [player])
 	player.connect("score_changed", self, "_on_score_changed", [player])
 	player.connect("hp_changed", self, "_on_hp_changed", [player])
+	player.connect("lives_changed", self, "_on_lives_changed", [player])
 	_on_coins_changed(player)
 	_on_score_changed(player)
 	_on_hp_changed(player)
-	_update_lives(player)
+	_on_lives_changed(player)
 
 func _on_coins_changed(player):
 	coin_label.text = str(player.coins)
@@ -30,7 +31,7 @@ func _on_hp_changed(player):
 			heart.self_modulate = Color(0,0,0)
 		i += 1
 
-func _update_lives(player):
+func _on_lives_changed(player):
 	life_label.text = "x" + str(player.lives)
 
 func on_pause():
