@@ -6,6 +6,8 @@ var game_hud_scene = preload("res://Scenes/GameHUD/GameHUD.tscn")
 var level
 var loaded_level_name
 var game_hud
+var player
+var prev_player_stats = {}
 
 func _ready():
 	randomize()
@@ -38,6 +40,8 @@ func load_level(level_name):
 	add_child(game_hud)
 	for child in level.get_children():
 		if child is Player:
+			player = child
+			player.init_stats(prev_player_stats)
 			game_hud.track_player(child)
 			child.connect("died", self, "_on_player_died")
 			break
@@ -46,3 +50,8 @@ func _unload_level():
 	if level:
 		remove_child(level)
 		remove_child(game_hud)
+	if player:
+		prev_player_stats["coins"] = player.coins
+		prev_player_stats["score"] = player.score
+		prev_player_stats["hp"] = player.hp
+		prev_player_stats["lives"] = player.lives

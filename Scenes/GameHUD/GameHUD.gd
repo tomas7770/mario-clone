@@ -4,13 +4,18 @@ onready var coin_label = $Container/CoinLabel
 onready var score_label = $Container/ScoreLabel
 onready var pause_box = $Container/PauseBox
 onready var heart_container = $Container/HeartContainer
+onready var life_label = $Container/LifeLabel
 
 func track_player(player):
-	player.connect("got_coin", self, "_on_got_coin", [player])
+	player.connect("coins_changed", self, "_on_coins_changed", [player])
 	player.connect("score_changed", self, "_on_score_changed", [player])
 	player.connect("hp_changed", self, "_on_hp_changed", [player])
+	_on_coins_changed(player)
+	_on_score_changed(player)
+	_on_hp_changed(player)
+	_update_lives(player)
 
-func _on_got_coin(player):
+func _on_coins_changed(player):
 	coin_label.text = str(player.coins)
 
 func _on_score_changed(player):
@@ -24,6 +29,9 @@ func _on_hp_changed(player):
 		else:
 			heart.self_modulate = Color(0,0,0)
 		i += 1
+
+func _update_lives(player):
+	life_label.text = "x" + str(player.lives)
 
 func on_pause():
 	pause_box.visible = true

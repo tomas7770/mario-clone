@@ -1,7 +1,7 @@
 extends KinematicBody2D
 class_name Player
 
-signal got_coin
+signal coins_changed
 signal score_changed
 signal hp_changed
 signal died
@@ -13,6 +13,7 @@ const WALK_ANIM = "walk"
 const JUMP_ANIM = "jump"
 
 const MAX_HP = 3
+const DEFAULT_LIVES = 5
 
 export (float) var gravity = 1200.0
 export (float) var acceleration = 500.0
@@ -38,6 +39,7 @@ var jumping = false
 var coins = 0
 var score = 0
 var hp = MAX_HP
+var lives = DEFAULT_LIVES
 var alive = true
 
 func _ready():
@@ -48,6 +50,12 @@ func _ready():
 		camera.limit_right = used_rect.end.x*tilemap.cell_size.x
 		camera.limit_top = used_rect.position.y*tilemap.cell_size.y-240
 		camera.limit_bottom = used_rect.end.y*tilemap.cell_size.y
+
+func init_stats(prev_stats):
+	for stat in prev_stats:
+		if stat == "hp" and prev_stats[stat] <= 0:
+			continue
+		self[stat] = prev_stats[stat]
 
 func _process_animations():
 	if is_on_floor():
@@ -163,7 +171,7 @@ func _on_BodyArea_area_entered(area):
 func give_coin():
 	coins += 1
 	coin_sound.play()
-	emit_signal("got_coin")
+	emit_signal("coins_changed")
 
 func give_score(amount):
 	score += amount
@@ -196,6 +204,7 @@ func _on_DamageTimer_timeout():
 
 func die():
 	hp = 0
+	lives -= 1
 	alive = false
 	velocity = death_bounce*Vector2.UP
 	sprite.animation = IDLE_ANIM
