@@ -4,6 +4,7 @@ class_name Player
 signal got_coin
 signal score_changed
 signal hp_changed
+signal died
 
 enum MOVE_DIR {LEFT, RIGHT}
 
@@ -201,3 +202,4 @@ func die():
 	animation_player.seek(0, true)
 	animation_player.stop()
 	emit_signal("hp_changed")
+	emit_signal("died")
