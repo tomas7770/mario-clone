@@ -11,7 +11,7 @@ var prev_player_stats = {}
 
 func _ready():
 	randomize()
-	load_level("TestLevel")
+	load_level("TestLevel2")
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
