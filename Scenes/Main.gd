@@ -45,6 +45,27 @@ func load_level(level_name):
 			game_hud.track_player(child)
 			child.connect("died", self, "_on_player_died")
 			break
+	_add_invisible_walls()
+
+func _add_invisible_walls():
+	var tilemap = level.get_node_or_null("TileMap")
+	if tilemap:
+		var used_rect = tilemap.get_used_rect()
+		var left_wall = StaticBody2D.new()
+		var right_wall = StaticBody2D.new()
+		level.add_child(left_wall)
+		level.add_child(right_wall)
+		left_wall.position = Vector2(used_rect.position.x*tilemap.cell_size.x - 8, 0)
+		right_wall.position = Vector2(used_rect.end.x*tilemap.cell_size.x + 8, 0)
+		_add_rectangular_collision(left_wall, Vector2(16, 1000000))
+		_add_rectangular_collision(right_wall, Vector2(16, 1000000))
+
+func _add_rectangular_collision(static_body, size):
+	var collision_shape = CollisionShape2D.new()
+	var rectangle_shape = RectangleShape2D.new()
+	rectangle_shape.extents = size/2
+	collision_shape.shape = rectangle_shape
+	static_body.add_child(collision_shape)
 
 func _unload_level():
 	if level:
