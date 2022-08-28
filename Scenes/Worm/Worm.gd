@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+const PROCESS_DISTANCE = 600
+
 export (float) var speed = 15.0
 export (int) var score = 100
 
@@ -10,9 +12,14 @@ onready var removal_timer = $RemovalTimer
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var velocity = Vector2.LEFT*speed
 var alive = true
+var processing = false
+var target_player
 
 func _ready():
 	sprite.playing = true
+
+func set_target_player(player):
+	target_player = player
 
 func _set_move_dir(left):
 	var dir = -1 if left else 1
@@ -28,6 +35,9 @@ func stomp(player):
 	player.give_score(score)
 
 func _physics_process(delta):
+	if !processing:
+		_try_activate()
+		return
 	velocity.y += gravity*delta
 	velocity = move_and_slide(velocity, Vector2.UP)
 	if alive:
@@ -37,6 +47,10 @@ func _physics_process(delta):
 				_set_move_dir(true)
 			elif Vector2.RIGHT.dot(collision.normal) > 0.01:
 				_set_move_dir(false)
+
+func _try_activate():
+	if target_player and position.x - target_player.position.x <= PROCESS_DISTANCE:
+		processing = true
 
 func _on_RemovalTimer_timeout():
 	queue_free()

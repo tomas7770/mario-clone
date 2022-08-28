@@ -45,6 +45,9 @@ func load_level(level_name):
 			game_hud.track_player(child)
 			child.connect("died", self, "_on_player_died")
 			break
+	if player:
+		for enemy in get_tree().get_nodes_in_group("Enemies"):
+			enemy.set_target_player(player)
 	_add_invisible_walls()
 
 func _add_invisible_walls():
