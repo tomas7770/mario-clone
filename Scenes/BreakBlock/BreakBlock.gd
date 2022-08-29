@@ -56,22 +56,25 @@ func do_break(player):
 				sprite.modulate = EMPTY_COLOR
 				is_broken = true
 		CONT_TYPE.HEART:
-			_shoot_heart(heart_scene)
+			_shoot_item(heart_scene)
 		CONT_TYPE.LIFE:
-			_shoot_heart(life_scene)
+			_shoot_item(life_scene)
 	hit_this_tick = true
 	if hidden:
 		sprite.visible = true
 		collision_shape.one_way_collision = false
 
-func _shoot_heart(base_scene):
-	var new_heart = base_scene.instance()
-	new_heart.position = position + Vector2(0, -12)
-	new_heart.velocity = ITEM_LAUNCH_VEL
+func _shoot_item(base_scene):
+	var new_item = base_scene.instance()
+	var physics_node = new_item.get_node_or_null("ItemPhysicsNode")
+	if !physics_node:
+		return
+	new_item.position = position + Vector2(0, -12)
+	physics_node.velocity = ITEM_LAUNCH_VEL
 	# Randomize X direction
 	if randi() % 2:
-		new_heart.velocity.x = -new_heart.velocity.x
-	get_parent().add_child(new_heart)
+		physics_node.velocity.x = -physics_node.velocity.x
+	get_parent().add_child(new_item)
 	sprite.modulate = EMPTY_COLOR
 	is_broken = true
 
