@@ -28,6 +28,7 @@ var hit_this_tick = false
 func _ready():
 	if hidden:
 		sprite.visible = false
+		collision_shape.one_way_collision = true
 
 func _destroy_on_timeout(timeout):
 	var timer = Timer.new()
@@ -61,6 +62,7 @@ func do_break(player):
 	hit_this_tick = true
 	if hidden:
 		sprite.visible = true
+		collision_shape.one_way_collision = false
 
 func _shoot_heart(base_scene):
 	var new_heart = base_scene.instance()
