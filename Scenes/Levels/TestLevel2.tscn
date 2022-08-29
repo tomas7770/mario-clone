@@ -76,6 +76,11 @@ coin_amount = 4
 [node name="BreakBlock17" parent="Blocks" instance=ExtResource( 3 )]
 position = Vector2( 1544, 144 )
 
+[node name="BreakBlock18" parent="Blocks" instance=ExtResource( 3 )]
+position = Vector2( 1368, -24 )
+content_type = 3
+hidden = true
+
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Worm" parent="Enemies" instance=ExtResource( 4 )]

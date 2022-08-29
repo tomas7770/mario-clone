@@ -1,14 +1,21 @@
 extends StaticBody2D
 class_name BreakBlock
 
-enum CONT_TYPE {NONE, COINS, HEART}
+enum CONT_TYPE {
+	NONE,
+	COINS,
+	HEART,
+	LIFE,
+}
 const EMPTY_COLOR = Color(0,1,1)
 const ITEM_LAUNCH_VEL = Vector2(15, -60)
 
 export (CONT_TYPE) var content_type = CONT_TYPE.NONE
 export (int) var coin_amount = 0
+export (bool) var hidden = false
 
 var heart_scene = preload("res://Scenes/Heart/Heart.tscn")
+var life_scene = preload("res://Scenes/Life/Life.tscn")
 
 onready var collision_shape = $CollisionShape2D
 onready var sprite = $AnimatedSprite
@@ -17,6 +24,10 @@ onready var coin_particle = $CoinParticle
 
 var is_broken = false
 var hit_this_tick = false
+
+func _ready():
+	if hidden:
+		sprite.visible = false
 
 func _destroy_on_timeout(timeout):
 	var timer = Timer.new()
@@ -44,16 +55,23 @@ func do_break(player):
 				sprite.modulate = EMPTY_COLOR
 				is_broken = true
 		CONT_TYPE.HEART:
-			var new_heart = heart_scene.instance()
-			new_heart.position = position + Vector2(0, -12)
-			new_heart.velocity = ITEM_LAUNCH_VEL
-			# Randomize X direction
-			if randi() % 2:
-				new_heart.velocity.x = -new_heart.velocity.x
-			get_parent().add_child(new_heart)
-			sprite.modulate = EMPTY_COLOR
-			is_broken = true
+			_shoot_heart(heart_scene)
+		CONT_TYPE.LIFE:
+			_shoot_heart(life_scene)
 	hit_this_tick = true
+	if hidden:
+		sprite.visible = true
+
+func _shoot_heart(base_scene):
+	var new_heart = base_scene.instance()
+	new_heart.position = position + Vector2(0, -12)
+	new_heart.velocity = ITEM_LAUNCH_VEL
+	# Randomize X direction
+	if randi() % 2:
+		new_heart.velocity.x = -new_heart.velocity.x
+	get_parent().add_child(new_heart)
+	sprite.modulate = EMPTY_COLOR
+	is_broken = true
 
 func _physics_process(_delta):
 	hit_this_tick = false
