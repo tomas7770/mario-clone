@@ -45,6 +45,8 @@ var hp = MAX_HP
 var lives = DEFAULT_LIVES
 var alive = true
 
+var bottom_pos
+
 func _ready():
 	var tilemap = get_parent().get_node_or_null("TileMap")
 	if tilemap:
@@ -53,6 +55,7 @@ func _ready():
 		camera.limit_right = used_rect.end.x*tilemap.cell_size.x
 		camera.limit_top = used_rect.position.y*tilemap.cell_size.y-240
 		camera.limit_bottom = used_rect.end.y*tilemap.cell_size.y
+		bottom_pos = used_rect.end.y*tilemap.cell_size.y
 
 func init_stats(prev_stats):
 	for stat in prev_stats:
@@ -151,6 +154,9 @@ func handle_touching_enemies():
 			if velocity.y <= 0:
 				take_damage()
 
+func _check_fall_death():
+	return position.y > bottom_pos + $CollisionShape2D.shape.extents.y
+
 func _physics_process(delta):
 	velocity.y += gravity*delta
 	if alive:
@@ -158,6 +164,8 @@ func _physics_process(delta):
 		velocity = move_and_slide(velocity, Vector2.UP)
 		_breakblocks()
 		handle_touching_enemies()
+		if _check_fall_death():
+			die()
 	else:
 		position += velocity*delta
 
@@ -222,7 +230,8 @@ func die():
 	alive = false
 	velocity = death_bounce*Vector2.UP
 	sprite.animation = IDLE_ANIM
-	animation_player.seek(0, true)
-	animation_player.stop()
+	if animation_player.is_playing():
+		animation_player.seek(0, true)
+		animation_player.stop()
 	emit_signal("hp_changed")
 	emit_signal("died")
