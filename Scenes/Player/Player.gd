@@ -8,6 +8,7 @@ signal lives_changed
 signal died
 
 enum MOVE_DIR {LEFT, RIGHT}
+enum POWERUP {FIRE_ESSENCE}
 
 const IDLE_ANIM = "idle"
 const WALK_ANIM = "walk"
@@ -27,6 +28,9 @@ export (float) var stop_jump_factor = 0.2
 export (float) var enemy_bounce = 200.0
 export (float) var death_bounce = 200.0
 
+var orange_shader = preload("res://Assets/Resources/Shaders/orange_player.tres")
+var fireball_scene = preload("res://Scenes/Fireball/Fireball.tscn")
+
 onready var body_area = $BodyArea
 onready var damage_timer = $DamageTimer
 onready var sprite = $AnimatedSprite
@@ -44,6 +48,7 @@ var score = 0
 var hp = MAX_HP
 var lives = DEFAULT_LIVES
 var alive = true
+var active_powerup = null
 
 var bottom_pos
 
@@ -124,6 +129,15 @@ func _stop_jump():
 		velocity.y *= stop_jump_factor
 	jumping = false
 
+func _attempt_fire():
+	match active_powerup:
+		POWERUP.FIRE_ESSENCE:
+			var fireball = fireball_scene.instance()
+			fireball.position = position
+			fireball.set_move_dir(current_move_dir)
+			fireball.set_source(self)
+			get_parent().add_child(fireball)
+
 func _physics_input(delta):
 	if Input.is_action_pressed("plr1_right"):
 		_attempt_move(delta, false)
@@ -135,6 +149,8 @@ func _physics_input(delta):
 		_attempt_jump()
 	elif !Input.is_action_pressed("plr1_jump"):
 		_stop_jump()
+	if Input.is_action_just_pressed("plr1_fire"):
+		_attempt_fire()
 
 func _breakblocks():
 	for i in range(get_slide_count()):
@@ -210,6 +226,7 @@ func take_damage():
 		animation_player.stop()
 		animation_player.play("Damage")
 		animation_player.seek(0.1)
+		take_powerup()
 		emit_signal("hp_changed")
 
 func _on_DamageTimer_timeout():
@@ -235,3 +252,13 @@ func die():
 		animation_player.stop()
 	emit_signal("hp_changed")
 	emit_signal("died")
+
+func give_powerup(powerup):
+	match powerup:
+		POWERUP.FIRE_ESSENCE:
+			sprite.material.shader = orange_shader
+	active_powerup = powerup
+
+func take_powerup():
+	sprite.material.shader = null
+	active_powerup = null

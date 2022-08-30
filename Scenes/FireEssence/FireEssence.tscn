@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Graphics/FireEssence/fire_powerup.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/FireEssence/FireEssence.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/ItemPhysicsNode/ItemPhysicsNode.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 4 )
+
+[node name="FireEssence" type="Area2D"]
+collision_layer = 2
+script = ExtResource( 2 )
+score = 1000
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Body" type="KinematicBody2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+
+[node name="ItemPhysicsNode" parent="." instance=ExtResource( 3 )]

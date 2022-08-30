@@ -6,6 +6,7 @@ enum CONT_TYPE {
 	COINS,
 	HEART,
 	LIFE,
+	FIRE_ESSENCE,
 }
 const EMPTY_COLOR = Color(0,1,1)
 const ITEM_LAUNCH_VEL = Vector2(15, -60)
@@ -16,6 +17,7 @@ export (bool) var hidden = false
 
 var heart_scene = preload("res://Scenes/Heart/Heart.tscn")
 var life_scene = preload("res://Scenes/Life/Life.tscn")
+var fire_essence_scene = preload("res://Scenes/FireEssence/FireEssence.tscn")
 
 onready var collision_shape = $CollisionShape2D
 onready var sprite = $AnimatedSprite
@@ -59,6 +61,8 @@ func do_break(player):
 			_shoot_item(heart_scene)
 		CONT_TYPE.LIFE:
 			_shoot_item(life_scene)
+		CONT_TYPE.FIRE_ESSENCE:
+			_shoot_item(fire_essence_scene)
 	hit_this_tick = true
 	if hidden:
 		sprite.visible = true

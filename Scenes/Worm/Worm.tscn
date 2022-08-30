@@ -51,9 +51,12 @@ frames = SubResource( 3 )
 offset = Vector2( 0, -5 )
 flip_h = true
 
+[node name="VisibilityNotifier" type="VisibilityNotifier2D" parent="AnimatedSprite"]
+
 [node name="RemovalTimer" type="Timer" parent="."]
 process_mode = 0
 wait_time = 0.5
 one_shot = true
 
+[connection signal="screen_exited" from="AnimatedSprite/VisibilityNotifier" to="." method="_on_VisibilityNotifier_screen_exited"]
 [connection signal="timeout" from="RemovalTimer" to="." method="_on_RemovalTimer_timeout"]
