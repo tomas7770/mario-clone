@@ -75,7 +75,11 @@ func _unload_level():
 		remove_child(level)
 		remove_child(game_hud)
 	if player:
-		prev_player_stats["coins"] = player.coins
-		prev_player_stats["score"] = player.score
-		prev_player_stats["hp"] = player.hp
-		prev_player_stats["lives"] = player.lives
+		_save_player_stats()
+
+func _save_player_stats():
+	prev_player_stats["coins"] = player.coins
+	prev_player_stats["score"] = player.score
+	prev_player_stats["hp"] = player.hp
+	prev_player_stats["lives"] = player.lives
+	prev_player_stats["active_powerup"] = player.active_powerup

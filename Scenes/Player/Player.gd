@@ -66,6 +66,10 @@ func init_stats(prev_stats):
 	for stat in prev_stats:
 		if stat == "hp" and prev_stats[stat] <= 0:
 			continue
+		elif stat == "active_powerup":
+			if prev_stats.has("hp") and prev_stats["hp"] > 0:
+				give_powerup(active_powerup)
+			continue
 		self[stat] = prev_stats[stat]
 
 func _process_animations():
